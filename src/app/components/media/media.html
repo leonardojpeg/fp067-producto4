@@ -1,0 +1,40 @@
+<h2 class="section-title">Reproductor</h2>
+
+<div *ngIf="player; else noVideo" class="media-card">
+  <div class="media-header">
+    <span class="media-team">{{ player.equipo }}</span>
+    <h3>Vídeo de {{ player.nombre }} {{ player.apellidos }}</h3>
+  </div>
+
+  <div class="video-wrapper">
+    <video #videoPlayer class="video-player" controls>
+      <source [src]="player.video" type="video/mp4" />
+      Tu navegador no soporta vídeo HTML5.
+    </video>
+  </div>
+
+  <div class="controls">
+    <button class="control-btn" (click)="play(videoPlayer)">Play</button>
+    <button class="control-btn" (click)="pause(videoPlayer)">Pause</button>
+    <button class="control-btn stop" (click)="stop(videoPlayer)">Stop</button>
+  </div>
+
+  <div class="volume-control">
+    <label for="volume">Volumen</label>
+    <input
+      id="volume"
+      type="range"
+      min="0"
+      max="1"
+      step="0.1"
+      value="1"
+      (input)="setVolume(videoPlayer, $event)"
+    />
+  </div>
+</div>
+
+<ng-template #noVideo>
+  <div class="empty-state">
+    <p>Selecciona un jugador para cargar su vídeo.</p>
+  </div>
+</ng-template>

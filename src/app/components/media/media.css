@@ -1,0 +1,100 @@
+.section-title {
+  margin-bottom: 0.9rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.media-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.media-header {
+  background: linear-gradient(135deg, #111827, #2563eb);
+  color: white;
+  border-radius: 16px;
+  padding: 1rem;
+}
+
+.media-header h3 {
+  margin: 0.35rem 0 0;
+  font-size: 1.15rem;
+  line-height: 1.2;
+}
+
+.media-team {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  opacity: 0.85;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.video-wrapper {
+  background: #0f172a;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #dbe3ee;
+}
+
+.video-player {
+  width: 100%;
+  display: block;
+  background: black;
+}
+
+.controls {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.control-btn {
+  border: none;
+  border-radius: 10px;
+  padding: 0.65rem 0.95rem;
+  background: #2563eb;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.control-btn:hover {
+  background: #1d4ed8;
+}
+
+.control-btn.stop {
+  background: #0f172a;
+}
+
+.control-btn.stop:hover {
+  background: #334155;
+}
+
+.volume-control {
+  background: white;
+  border: 1px solid #dbe3ee;
+  border-radius: 14px;
+  padding: 0.85rem 1rem;
+}
+
+.volume-control label {
+  display: block;
+  margin-bottom: 0.45rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.volume-control input[type='range'] {
+  width: 100%;
+}
+
+.empty-state {
+  background: white;
+  border: 1px dashed #cbd5e1;
+  border-radius: 14px;
+  padding: 1rem;
+  color: #475569;
+}
