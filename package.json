@@ -1,6 +1,7 @@
 {
   "name": "producto1-basket",
   "version": "0.0.0",
+  "private": true,
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --port 4200",
@@ -8,7 +9,6 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
-  "private": true,
   "dependencies": {
     "@angular/common": "17.3.12",
     "@angular/compiler": "17.3.12",
@@ -20,9 +20,9 @@
     "tslib": "2.6.2"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "17.3.12",
     "@angular/cli": "17.3.12",
     "@angular/compiler-cli": "17.3.12",
-    "@angular-devkit/build-angular": "17.3.12",
     "typescript": "5.4.5"
   }
 }
