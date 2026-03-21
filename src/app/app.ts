@@ -9,7 +9,7 @@ import { MediaComponent } from './components/media/media';
   standalone: true,
   imports: [PlayersComponent, DetailComponent, MediaComponent],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrls: ['./app.css']
 })
 export class App {
   selectedPlayer: Player | null = null;
