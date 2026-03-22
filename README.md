@@ -7,7 +7,7 @@ El proyecto implementa una SPA (Single Page Application) con componentes indepen
 
 ## 🚀 Cómo ejecutar el proyecto
 
-Este proyecto está preparado para ejecutarse en **CodeSandbox**.
+Este proyecto está preparado para ejecutarse en **CodeSandbox**: https://codesandbox.io/p/sandbox/github/leonardojpeg/fp067/tree/feature/leonardo
 
 ### ⚠️ IMPORTANTE
 Para que funcione correctamente:
