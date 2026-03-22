@@ -1,59 +1,131 @@
-# Producto1Basket
+# 🏀 EQUIPO BASKET — Producto 1 (Angular Frontend)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.3.
+Aplicación desarrollada con **Angular** para la gestión y visualización de un equipo de baloncesto.  
+El proyecto implementa una SPA (Single Page Application) con componentes independientes que se comunican entre sí.
 
-## Development server
+---
 
-To start a local development server, run:
+## 🚀 Cómo ejecutar el proyecto
 
-```bash
-ng serve
-```
+Este proyecto está preparado para ejecutarse en **CodeSandbox**.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### ⚠️ IMPORTANTE
+Para que funcione correctamente:
 
-## Code scaffolding
+1. Debes hacer un **fork del proyecto** en CodeSandbox  
+2. Una vez hecho el fork, el entorno iniciará automáticamente  
+3. Abre el navegador en:
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
 
-```bash
-ng generate component component-name
-```
+http://localhost:4200
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
 
-```bash
-ng generate --help
-```
+Ahí podrás ver la aplicación funcionando.
 
-## Building
+---
 
-To build the project run:
+## 🧩 Estructura de la aplicación
 
-```bash
-ng build
-```
+La aplicación está basada en arquitectura de componentes de Angular:
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+- **PlayersComponent**
+  - Muestra el listado de jugadores
+  - Incluye búsqueda y filtrado
 
-## Running unit tests
+- **DetailComponent**
+  - Muestra la información detallada del jugador seleccionado
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+- **MediaComponent**
+  - Reproductor de vídeo del jugador
+  - Controles personalizados: play, pause, stop, progreso y volumen
 
-```bash
-ng test
-```
+---
 
-## Running end-to-end tests
+## 🔄 Comunicación entre componentes
 
-For end-to-end (e2e) testing, run:
+- `PlayersComponent` → emite el jugador seleccionado
+- `AppComponent` → gestiona el estado global
+- `DetailComponent` y `MediaComponent` → reciben el jugador mediante `@Input`
 
-```bash
-ng e2e
-```
+---
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## 🔍 Funcionalidades principales
 
-## Additional Resources
+- ✔ Listado dinámico con `*ngFor`
+- ✔ Condicionales con `*ngIf`
+- ✔ Selección de jugador con feedback visual
+- ✔ Comunicación entre componentes (EventEmitter + Input)
+- ✔ Reproductor multimedia con control manual
+- ✔ Barra de progreso sincronizada
+- ✔ Control de volumen
+- ✔ Pipe de filtrado con:
+  - búsqueda por nombre/equipo
+  - filtro por posición
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---
+
+## 📁 Estructura de datos
+
+Los datos se encuentran en un archivo separado, simulando una fuente de datos local:
+
+
+/data/players.ts
+
+
+Esto permite desacoplar la lógica de los componentes.
+
+---
+
+## 🎬 Recursos multimedia
+
+Los vídeos y recursos visuales se almacenan en:
+
+
+/assets/
+
+
+---
+
+## 📐 Documentación adicional
+
+Dentro del proyecto se incluye una carpeta:
+
+
+/doc/
+
+
+Que contiene:
+
+- 📊 Diagrama UML (MVC)
+- 📌 Estructura conceptual de la aplicación
+
+---
+
+## 🛠️ Tecnologías utilizadas
+
+- Angular
+- TypeScript
+- HTML5
+- CSS3
+- Bootstrap (para estilos base)
+
+---
+
+## 🎯 Objetivo del proyecto
+
+Aplicar los conceptos fundamentales de Angular:
+
+- Componentes
+- Binding
+- Comunicación entre componentes
+- Pipes
+- Organización del código
+
+---
+
+## 👨‍💻 Autor
+
+Leonardo Cuevas  
+FP.067 — Desarrollo Front-End con frameworks
+
+---
