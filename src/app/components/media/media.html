@@ -20,9 +20,9 @@
   </div>
 
   <div class="controls">
-    <button class="control-btn" (click)="play(videoPlayer)">Play</button>
-    <button class="control-btn" (click)="pause(videoPlayer)">Pause</button>
-    <button class="control-btn stop" (click)="stop(videoPlayer)">Stop</button>
+    <button class="control-btn" (click)="play(videoPlayer)">Reproducir</button>
+    <button class="control-btn" (click)="pause(videoPlayer)">Pausar</button>
+    <button class="control-btn stop" (click)="stop(videoPlayer)">Detener</button>
   </div>
 
   <div class="volume-control">
@@ -34,6 +34,7 @@
       [max]="duration"
       step="0.1"
       [value]="currentTime"
+      [style.--progress-percent]="getProgressPercent()"
       (input)="seek(videoPlayer, $event)"
     />
   </div>
@@ -46,7 +47,8 @@
       min="0"
       max="1"
       step="0.1"
-      value="1"
+      [value]="volume"
+      [style.--progress-percent]="getVolumePercent()"
       (input)="setVolume(videoPlayer, $event)"
     />
   </div>

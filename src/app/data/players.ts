@@ -12,8 +12,8 @@ export const PLAYERS: Player[] = [
     equipo: 'Los Angeles Lakers',
     estado: 'Disponible',
     perfil: 'Líder del equipo con amplia experiencia y capacidad anotadora.',
-    video: 'assets/videos/lebron.mp4',
-    imagen: 'assets/images/lebron.jpg'
+    video: 'assets/videos/lebronjames.mp4',
+    imagen: 'assets/images/lebronjames.jpg'
   },
   {
     id: 2,
@@ -26,12 +26,12 @@ export const PLAYERS: Player[] = [
     equipo: 'Los Angeles Lakers',
     estado: 'Disponible',
     perfil: 'Dominante en defensa y en la pintura.',
-    video: 'assets/videos/jokic.mp4',
-    imagen: 'assets/images/jokic.jpg'
+    video: 'assets/videos/anthonydavis.mp4',
+    imagen: 'assets/images/anthonydavis.jpg'
   },
   {
     id: 3,
-    nombre: 'D\'Angelo',
+    nombre: "D'Angelo",
     apellidos: 'Russell',
     posicion: 'Base',
     edad: 29,
@@ -40,8 +40,8 @@ export const PLAYERS: Player[] = [
     equipo: 'Los Angeles Lakers',
     estado: 'Disponible',
     perfil: 'Base creativo con buen tiro exterior.',
-    video: 'assets/videos/curry.mp4',
-    imagen: 'assets/images/curry.jpg'
+    video: 'assets/videos/dangelorussell.mp4',
+    imagen: 'assets/images/dangelorussell.jpg'
   },
   {
     id: 4,
@@ -54,8 +54,8 @@ export const PLAYERS: Player[] = [
     equipo: 'Los Angeles Lakers',
     estado: 'Disponible',
     perfil: 'Jugador inteligente y versátil.',
-    video: 'assets/videos/curry.mp4',
-    imagen: 'assets/images/curry.jpg'
+    video: 'assets/videos/austinreaves.mp4',
+    imagen: 'assets/images/austinreaves.jpg'
   },
   {
     id: 5,
@@ -68,7 +68,7 @@ export const PLAYERS: Player[] = [
     equipo: 'Chicago Bulls',
     estado: 'Disponible',
     perfil: 'Jugador físico con capacidad ofensiva.',
-    video: 'assets/videos/durant.mp4',
-    imagen: 'assets/images/durant.jpg'
+    video: 'assets/videos/ruihachimura.mp4',
+    imagen: 'assets/images/ruihachimura.jpg'
   }
 ];
