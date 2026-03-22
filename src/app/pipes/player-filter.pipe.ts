@@ -17,8 +17,9 @@ export class PlayerFilterPipe implements PipeTransform {
     return players.filter((player) => {
       const matchesText =
         !text ||
-        player.nombre.toLowerCase().includes(text) ||
-        player.apellidos.toLowerCase().includes(text);
+          player.nombre.toLowerCase().includes(text) ||
+          player.apellidos.toLowerCase().includes(text) ||
+          player.equipo.toLowerCase().includes(text);
 
       const matchesPosition =
         !position ||

@@ -42,8 +42,8 @@
   <div class="detail-info">
     <p><strong>Equipo:</strong> {{ player.equipo }}</p>
     <p><strong>Nombre:</strong> {{ player.nombre }} {{ player.apellidos }}</p>
-    <p><strong>Estado:</strong> Disponible</p>
-    <p><strong>Perfil:</strong> Jugador clave de la plantilla.</p>
+    <p><strong>Estado:</strong> {{ player.estado }}</p>
+    <p><strong>Perfil:</strong> {{ player.perfil }}</p>
   </div>
 
   <button class="close-btn" (click)="close()">Cerrar detalle</button>

@@ -21,13 +21,13 @@
 
 .player-card:hover {
   transform: translateY(-2px);
-  border-color: #0d6efd;
+  border-color: #FDB927;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
 }
 
 .player-card.selected {
-  border: 2px solid #0d6efd;
-  background: #eef5ff;
+  border: 2px solid #FDB927;
+  background: #fff7e0;
 }
 
 .player-main {

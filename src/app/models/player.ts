@@ -7,6 +7,8 @@ export interface Player {
   altura: string;
   dorsal: number;
   equipo: string;
+  estado: string;
+  perfil: string;
   video: string;
   imagen: string;
 }

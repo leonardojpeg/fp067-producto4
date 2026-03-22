@@ -7,7 +7,13 @@
   </div>
 
   <div class="video-wrapper">
-    <video #videoPlayer class="video-player" controls>
+    <video
+      #videoPlayer
+      class="video-player"
+      controls
+      (timeupdate)="updateProgress(videoPlayer)"
+      (loadedmetadata)="onLoadedMetadata(videoPlayer)"
+    >
       <source [src]="player.video" type="video/mp4" />
       Tu navegador no soporta vídeo HTML5.
     </video>
@@ -17,6 +23,19 @@
     <button class="control-btn" (click)="play(videoPlayer)">Play</button>
     <button class="control-btn" (click)="pause(videoPlayer)">Pause</button>
     <button class="control-btn stop" (click)="stop(videoPlayer)">Stop</button>
+  </div>
+
+  <div class="volume-control">
+    <label for="progress">Progreso</label>
+    <input
+      id="progress"
+      type="range"
+      min="0"
+      [max]="duration"
+      step="0.1"
+      [value]="currentTime"
+      (input)="seek(videoPlayer, $event)"
+    />
   </div>
 
   <div class="volume-control">
