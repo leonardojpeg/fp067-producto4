@@ -91,22 +91,34 @@
   </div>
 
   <!-- SUBIDA -->
-  <div *ngIf="editMode" class="upload-box">
+<div *ngIf="editMode" class="upload-box">
 
-    <label><i class="bi bi-image"></i> Imagen</label>
-    <input type="file" (change)="uploadImage($event)">
+  <label><i class="bi bi-image"></i> Imagen</label>
+  <input type="file" (change)="uploadImage($event)">
 
-    <label><i class="bi bi-camera-video"></i> Video</label>
-    <input type="file" (change)="uploadVideo($event)">
-
+  <!-- feedback imagen -->
+  <div *ngIf="isUploadingImage" style="margin-top:5px;">
+    <small style="color:#2563eb;">Subiendo imagen...</small>
   </div>
 
+  <label style="margin-top:10px;">
+    <i class="bi bi-camera-video"></i> Video
+  </label>
+  <input type="file" (change)="uploadVideo($event)">
+
+  <!-- feedback video -->
+  <div *ngIf="isUploadingVideo" style="margin-top:5px;">
+    <small style="color:#2563eb;">Subiendo vídeo...</small>
+  </div>
+
+</div>
+
   <!-- PREVIEW SOLO EN EDIT -->
-  <div *ngIf="editMode && player?.imagen" style="margin-top:10px;">
+  <div *ngIf="editMode && player.imagen" style="margin-top:10px;">
     <img [src]="player.imagen" style="width:120px; border-radius:10px;">
   </div>
 
-  <div *ngIf="editMode && player?.video" style="margin-top:10px;">
+  <div *ngIf="editMode && player.video" style="margin-top:10px;">
     <small>Vídeo cargado correctamente</small>
   </div>
 

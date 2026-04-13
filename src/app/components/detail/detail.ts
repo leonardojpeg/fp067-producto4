@@ -21,6 +21,10 @@ export class DetailComponent {
 
   editMode: boolean = false;
 
+  // estados de subida
+  isUploadingImage: boolean = false;
+  isUploadingVideo: boolean = false;
+
   constructor(private playerService: PlayerService) {}
 
   close(): void {
@@ -42,41 +46,63 @@ export class DetailComponent {
     this.editMode = false;
   }
 
+  // =========================
   // SUBIR IMAGEN
+  // =========================
   async uploadImage(event: any): Promise<void> {
     const file = event.target.files[0];
     if (!file || !this.player) return;
 
-    const storage = getStorage();
-    const storageRef = ref(storage, `players/images/${Date.now()}_${file.name}`);
+    try {
+      this.isUploadingImage = true;
 
-    await uploadBytes(storageRef, file);
-    const url = await getDownloadURL(storageRef);
+      const storage = getStorage();
+      const storageRef = ref(storage, `players/images/${Date.now()}_${file.name}`);
 
-    this.player.imagen = url;
+      await uploadBytes(storageRef, file);
+      const url = await getDownloadURL(storageRef);
 
-    // guardar en firestore
-    if (this.player.id) {
-      await this.playerService.updatePlayer(this.player.id, this.player);
+      this.player.imagen = url;
+
+      // guardar automáticamente en Firestore
+      if (this.player.id) {
+        await this.playerService.updatePlayer(this.player.id, this.player);
+      }
+
+    } catch (error) {
+      console.error('Error subiendo imagen:', error);
+    } finally {
+      this.isUploadingImage = false;
     }
   }
 
+  // =========================
   // SUBIR VIDEO
+  // =========================
   async uploadVideo(event: any): Promise<void> {
     const file = event.target.files[0];
     if (!file || !this.player) return;
 
-    const storage = getStorage();
-    const storageRef = ref(storage, `players/videos/${Date.now()}_${file.name}`);
+    try {
+      this.isUploadingVideo = true;
 
-    await uploadBytes(storageRef, file);
-    const url = await getDownloadURL(storageRef);
+      const storage = getStorage();
+      const storageRef = ref(storage, `players/videos/${Date.now()}_${file.name}`);
 
-    this.player.video = url;
+      await uploadBytes(storageRef, file);
+      const url = await getDownloadURL(storageRef);
 
-    // guardar en firestore
-    if (this.player.id) {
-      await this.playerService.updatePlayer(this.player.id, this.player);
+      this.player.video = url;
+
+      // guardar automáticamente en Firestore
+      if (this.player.id) {
+        await this.playerService.updatePlayer(this.player.id, this.player);
+      }
+
+    } catch (error) {
+      console.error('Error subiendo video:', error);
+    } finally {
+      this.isUploadingVideo = false;
     }
   }
 }

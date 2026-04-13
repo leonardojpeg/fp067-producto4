@@ -17,6 +17,7 @@ import { Player } from '../../models/player';
   styleUrl: './media.css'
 })
 export class MediaComponent implements OnChanges {
+
   @Input() player: Player | null = null;
   @ViewChild('videoPlayer') videoRef!: ElementRef<HTMLVideoElement>;
 
@@ -27,8 +28,8 @@ export class MediaComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['player'] && !changes['player'].firstChange) {
       setTimeout(() => {
-        if (this.videoRef?.nativeElement) {
-          const video = this.videoRef.nativeElement;
+        const video = this.videoRef?.nativeElement;
+        if (video) {
           video.pause();
           video.load();
           this.currentTime = 0;
@@ -40,26 +41,32 @@ export class MediaComponent implements OnChanges {
     }
   }
 
-  play(video: HTMLVideoElement): void {
-    video.play();
+  private get video(): HTMLVideoElement | null {
+    return this.videoRef?.nativeElement || null;
   }
 
-  pause(video: HTMLVideoElement): void {
-    video.pause();
+  play(): void {
+    this.video?.play();
   }
 
-  stop(video: HTMLVideoElement): void {
-    video.pause();
-    video.currentTime = 0;
-    this.currentTime = 0;
+  pause(): void {
+    this.video?.pause();
   }
 
-  setVolume(video: HTMLVideoElement, event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const newVolume = Number(input.value);
+  stop(): void {
+    if (this.video) {
+      this.video.pause();
+      this.video.currentTime = 0;
+      this.currentTime = 0;
+    }
+  }
 
-    video.volume = newVolume;
-    this.volume = newVolume;
+  setVolume(event: Event): void {
+    const value = Number((event.target as HTMLInputElement).value);
+    if (this.video) {
+      this.video.volume = value;
+      this.volume = value;
+    }
   }
 
   updateProgress(video: HTMLVideoElement): void {
@@ -67,12 +74,12 @@ export class MediaComponent implements OnChanges {
     this.duration = video.duration || 0;
   }
 
-  seek(video: HTMLVideoElement, event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const time = Number(input.value);
-
-    video.currentTime = time;
-    this.currentTime = time;
+  seek(event: Event): void {
+    const time = Number((event.target as HTMLInputElement).value);
+    if (this.video) {
+      this.video.currentTime = time;
+      this.currentTime = time;
+    }
   }
 
   onLoadedMetadata(video: HTMLVideoElement): void {
@@ -80,10 +87,7 @@ export class MediaComponent implements OnChanges {
   }
 
   getProgressPercent(): string {
-    if (!this.duration || this.duration <= 0) {
-      return '0%';
-    }
-
+    if (!this.duration) return '0%';
     return `${(this.currentTime / this.duration) * 100}%`;
   }
 

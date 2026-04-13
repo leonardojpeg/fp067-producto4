@@ -6,6 +6,9 @@ import { Player } from '../../models/player';
 import { PlayerFilterPipe } from '../../pipes/player-filter.pipe';
 import { PlayerService } from '../../services/player.service';
 
+// FIREBASE STORAGE
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
 @Component({
   selector: 'app-players',
   standalone: true,
@@ -25,12 +28,14 @@ export class PlayersComponent implements OnInit {
 
   positions: string[] = ['Todas', 'Base', 'Escolta', 'Alero', 'Pívot'];
 
-  // FORM NUEVO JUGADOR
   newPlayer: Player = this.resetPlayer();
 
-  // FEEDBACK
   successMessage: string = '';
   errorMessage: string = '';
+
+  // 🔥 CONTROL DE SUBIDA
+  isUploadingImage: boolean = false;
+  isUploadingVideo: boolean = false;
 
   constructor(private playerService: PlayerService) {}
 
@@ -45,15 +50,22 @@ export class PlayersComponent implements OnInit {
     this.playerSelected.emit(player);
   }
 
-  // DELETE
   deletePlayer(id: string): void {
     this.playerService.deletePlayer(id);
   }
 
-  // CREATE con validación
+  // =========================
+  // CREATE
+  // =========================
   addPlayer(): void {
 
     this.clearMessages();
+
+    // 🔥 BLOQUEO SI ESTÁ SUBIENDO
+    if (this.isUploadingImage || this.isUploadingVideo) {
+      this.errorMessage = 'Espera a que terminen de subirse los archivos';
+      return;
+    }
 
     if (!this.isValidPlayer(this.newPlayer)) {
       this.errorMessage = 'Todos los campos obligatorios deben estar rellenos correctamente';
@@ -70,7 +82,61 @@ export class PlayersComponent implements OnInit {
       });
   }
 
+  // =========================
+  // SUBIR IMAGEN
+  // =========================
+  async uploadImage(event: any): Promise<void> {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    this.isUploadingImage = true;
+
+    try {
+      const storage = getStorage();
+      const storageRef = ref(storage, `players/images/${Date.now()}_${file.name}`);
+
+      await uploadBytes(storageRef, file);
+      const url = await getDownloadURL(storageRef);
+
+      this.newPlayer.imagen = url;
+
+    } catch (error) {
+      console.error(error);
+      this.errorMessage = 'Error al subir la imagen';
+    } finally {
+      this.isUploadingImage = false;
+    }
+  }
+
+  // =========================
+  // SUBIR VIDEO
+  // =========================
+  async uploadVideo(event: any): Promise<void> {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    this.isUploadingVideo = true;
+
+    try {
+      const storage = getStorage();
+      const storageRef = ref(storage, `players/videos/${Date.now()}_${file.name}`);
+
+      await uploadBytes(storageRef, file);
+      const url = await getDownloadURL(storageRef);
+
+      this.newPlayer.video = url;
+
+    } catch (error) {
+      console.error(error);
+      this.errorMessage = 'Error al subir el vídeo';
+    } finally {
+      this.isUploadingVideo = false;
+    }
+  }
+
+  // =========================
   // VALIDACIÓN
+  // =========================
   isValidPlayer(player: Player): boolean {
     return !!(
       player.nombre?.trim() &&
@@ -82,20 +148,22 @@ export class PlayersComponent implements OnInit {
     );
   }
 
-  // RESET FORM 
+  // =========================
+  // RESET FORM
+  // =========================
   resetPlayer(): Player {
     return {
       nombre: '',
       apellidos: '',
       posicion: '',
-      edad: null as any,     
+      edad: null as any,
       altura: '',
-      dorsal: null as any,   
+      dorsal: null as any,
       equipo: '',
-      estado: 'Disponible',  
+      estado: 'Disponible',
       perfil: '',
       video: '',
-      imagen: 'assets/images/player-placeholder.jpg'
+      imagen: ''
     };
   }
 
