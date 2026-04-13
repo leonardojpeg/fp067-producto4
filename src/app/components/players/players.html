@@ -71,17 +71,33 @@
 
   </div>
 
+  <!-- SUBIDA ARCHIVOS -->
   <div style="margin-top:10px; display:flex; flex-direction:column; gap:6px;">
 
-  <label>Imagen</label>
-  <input type="file" (change)="uploadImage($event)">
+    <label>Imagen</label>
+    <input type="file" (change)="uploadImage($event)">
 
-  <label>Video</label>
-  <input type="file" (change)="uploadVideo($event)">
+    <!-- FEEDBACK IMAGEN -->
+    <div *ngIf="isUploadingImage">
+      <small style="color:#2563eb;">Subiendo imagen...</small>
+    </div>
 
-</div>
+    <label style="margin-top:10px;">Video</label>
+    <input type="file" (change)="uploadVideo($event)">
+    <br>
+    <!-- FEEDBACK VIDEO -->
+    <div *ngIf="isUploadingVideo">
+      <small style="color:#2563eb;">Subiendo vídeo...</small>
+    </div>
 
-  <button (click)="addPlayer()" class="btn btn-success btn-full">
+  </div>
+
+  <!-- BOTÓN -->
+  <button 
+    (click)="addPlayer()" 
+    class="btn btn-success btn-full"
+    [disabled]="isUploadingImage || isUploadingVideo"
+  >
     Añadir jugador
   </button>
 </div>
