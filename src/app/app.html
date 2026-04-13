@@ -1,0 +1,27 @@
+<div class="top-stripe"></div>
+
+<header class="main-header">
+  <div class="brand-block">
+    <h1>Los Angeles Lakers</h1>
+    <p>Plantilla oficial · Temporada 2025-26</p>
+  </div>
+</header>
+
+<main class="app-layout">
+  <section class="panel players-panel">
+    <app-players (playerSelected)="onPlayerSelected($event)"></app-players>
+  </section>
+
+  <section class="right-column">
+    <div class="panel detail-panel">
+      <app-detail
+        [player]="selectedPlayer"
+        (closeDetail)="clearSelection()"
+      ></app-detail>
+    </div>
+
+    <div class="panel media-panel">
+      <app-media [player]="selectedPlayer"></app-media>
+    </div>
+  </section>
+</main>

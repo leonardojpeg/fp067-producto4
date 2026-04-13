@@ -1,0 +1,41 @@
+<h2 class="section-title">Jugadores</h2>
+
+<div class="filters-box">
+  <div class="filter-group">
+    <label for="search">Buscar jugador</label>
+    <input
+      id="search"
+      type="text"
+      [(ngModel)]="searchText"
+      placeholder="Nombre o apellido"
+    />
+  </div>
+
+  <div class="filter-group">
+    <label for="position">Posición</label>
+    <select id="position" [(ngModel)]="selectedPosition">
+      <option *ngFor="let position of positions" [value]="position">
+        {{ position }}
+      </option>
+    </select>
+  </div>
+</div>
+
+<div class="players-list">
+  <article
+    class="player-card"
+    *ngFor="let player of players | playerFilter:searchText:selectedPosition"
+    [class.selected]="player.id === selectedPlayerId"
+    (click)="selectPlayer(player)"
+  >
+    <div class="player-main">
+      <h3>{{ player.nombre }} {{ player.apellidos }}</h3>
+      <span class="badge-position">{{ player.posicion }}</span>
+    </div>
+
+    <p><strong>Equipo:</strong> {{ player.equipo }}</p>
+    <p><strong>Edad:</strong> {{ player.edad }}</p>
+    <p><strong>Altura:</strong> {{ player.altura }}</p>
+    <p><strong>Dorsal:</strong> {{ player.dorsal }}</p>
+  </article>
+</div>

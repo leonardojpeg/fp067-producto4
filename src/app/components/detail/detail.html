@@ -1,0 +1,56 @@
+<h2 class="section-title">Detalle del jugador</h2>
+
+<div *ngIf="player; else noSelection" class="detail-card">
+  <div class="detail-top">
+    <div class="detail-image-wrapper">
+      <img
+        [src]="player.imagen"
+        [alt]="player.nombre"
+        class="detail-image"
+      />
+    </div>
+
+    <div class="detail-heading">
+      <span class="detail-team">{{ player.equipo }}</span>
+      <h3>{{ player.nombre }} {{ player.apellidos }}</h3>
+      <span class="detail-position">{{ player.posicion }}</span>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-box">
+      <span class="stat-label">Edad</span>
+      <span class="stat-value">{{ player.edad }}</span>
+    </div>
+
+    <div class="stat-box">
+      <span class="stat-label">Altura</span>
+      <span class="stat-value">{{ player.altura }}</span>
+    </div>
+
+    <div class="stat-box">
+      <span class="stat-label">Dorsal</span>
+      <span class="stat-value">#{{ player.dorsal }}</span>
+    </div>
+
+    <div class="stat-box">
+      <span class="stat-label">Posición</span>
+      <span class="stat-value">{{ player.posicion }}</span>
+    </div>
+  </div>
+
+  <div class="detail-info">
+    <p><strong>Equipo:</strong> {{ player.equipo }}</p>
+    <p><strong>Nombre:</strong> {{ player.nombre }} {{ player.apellidos }}</p>
+    <p><strong>Estado:</strong> {{ player.estado }}</p>
+    <p><strong>Perfil:</strong> {{ player.perfil }}</p>
+  </div>
+
+  <button class="close-btn" (click)="close()">Cerrar detalle</button>
+</div>
+
+<ng-template #noSelection>
+  <div class="empty-state">
+    <p>Selecciona un jugador para ver su detalle.</p>
+  </div>
+</ng-template>
