@@ -1,10 +1,12 @@
 <h2 class="section-title">Detalle del jugador</h2>
 
 <div *ngIf="player; else noSelection" class="detail-card">
+
+  <!-- HEADER -->
   <div class="detail-top">
     <div class="detail-image-wrapper">
       <img
-        [src]="player.imagen"
+        [src]="player.imagen || 'assets/images/player-placeholder.jpg'"
         [alt]="player.nombre"
         class="detail-image"
       />
@@ -12,45 +14,127 @@
 
     <div class="detail-heading">
       <span class="detail-team">{{ player.equipo }}</span>
-      <h3>{{ player.nombre }} {{ player.apellidos }}</h3>
+
+      <h3 *ngIf="!editMode">
+        {{ player.nombre }} {{ player.apellidos }}
+      </h3>
+
+      <div *ngIf="editMode" class="edit-inline">
+        <input [(ngModel)]="player.nombre" placeholder="Nombre">
+        <input [(ngModel)]="player.apellidos" placeholder="Apellidos">
+      </div>
+
       <span class="detail-position">{{ player.posicion }}</span>
     </div>
   </div>
 
+  <!-- STATS -->
   <div class="stats-grid">
+
     <div class="stat-box">
       <span class="stat-label">Edad</span>
-      <span class="stat-value">{{ player.edad }}</span>
+      <span *ngIf="!editMode" class="stat-value">{{ player.edad }}</span>
+      <input *ngIf="editMode" type="number" [(ngModel)]="player.edad" placeholder="Edad">
     </div>
 
     <div class="stat-box">
       <span class="stat-label">Altura</span>
-      <span class="stat-value">{{ player.altura }}</span>
+      <span *ngIf="!editMode" class="stat-value">{{ player.altura }}</span>
+      <input *ngIf="editMode" [(ngModel)]="player.altura" placeholder="Altura (2.06 m)">
     </div>
 
     <div class="stat-box">
       <span class="stat-label">Dorsal</span>
-      <span class="stat-value">#{{ player.dorsal }}</span>
+      <span *ngIf="!editMode" class="stat-value">#{{ player.dorsal }}</span>
+      <input *ngIf="editMode" type="number" [(ngModel)]="player.dorsal" placeholder="Dorsal">
     </div>
 
     <div class="stat-box">
       <span class="stat-label">Posición</span>
-      <span class="stat-value">{{ player.posicion }}</span>
+      <span *ngIf="!editMode" class="stat-value">{{ player.posicion }}</span>
+      <input *ngIf="editMode" [(ngModel)]="player.posicion" placeholder="Posición">
     </div>
+
   </div>
 
-  <div class="detail-info">
-    <p><strong>Equipo:</strong> {{ player.equipo }}</p>
-    <p><strong>Nombre:</strong> {{ player.nombre }} {{ player.apellidos }}</p>
-    <p><strong>Estado:</strong> {{ player.estado }}</p>
-    <p><strong>Perfil:</strong> {{ player.perfil }}</p>
+  <!-- EXTRA INFO -->
+  <div class="detail-extra">
+
+    <div class="extra-box">
+      <span class="extra-label">
+        <i class="bi bi-dribbble"></i> Equipo
+      </span>
+      <span *ngIf="!editMode" class="extra-value">{{ player.equipo }}</span>
+      <input *ngIf="editMode" [(ngModel)]="player.equipo" placeholder="Equipo">
+    </div>
+
+    <div class="extra-box">
+      <span class="extra-label">
+        <i 
+          class="bi bi-circle-fill status-dot"
+          [style.color]="player.estado === 'Disponible' ? '#22c55e' : '#ef4444'">
+        </i>
+        Estado
+      </span>
+      <span *ngIf="!editMode" class="extra-value">{{ player.estado }}</span>
+      <input *ngIf="editMode" [(ngModel)]="player.estado" placeholder="Estado">
+    </div>
+
+    <div class="extra-box full">
+      <span class="extra-label">
+        <i class="bi bi-person-badge"></i> Perfil
+      </span>
+      <span *ngIf="!editMode" class="extra-value">{{ player.perfil }}</span>
+      <textarea *ngIf="editMode" [(ngModel)]="player.perfil" placeholder="Descripción del jugador"></textarea>
+    </div>
+
   </div>
 
-  <button class="close-btn" (click)="close()">Cerrar detalle</button>
+  <!-- SUBIDA -->
+  <div *ngIf="editMode" class="upload-box">
+
+    <label><i class="bi bi-image"></i> Imagen</label>
+    <input type="file" (change)="uploadImage($event)">
+
+    <label><i class="bi bi-camera-video"></i> Video</label>
+    <input type="file" (change)="uploadVideo($event)">
+
+  </div>
+
+  <!-- PREVIEW SOLO EN EDIT -->
+  <div *ngIf="editMode && player?.imagen" style="margin-top:10px;">
+    <img [src]="player.imagen" style="width:120px; border-radius:10px;">
+  </div>
+
+  <div *ngIf="editMode && player?.video" style="margin-top:10px;">
+    <small>Vídeo cargado correctamente</small>
+  </div>
+
+  <!-- BOTONES -->
+  <div class="detail-actions">
+
+    <button *ngIf="!editMode" (click)="enableEdit()" class="btn-primary">
+      Editar
+    </button>
+
+    <button *ngIf="editMode" (click)="savePlayer()" class="btn-success">
+      Guardar
+    </button>
+
+    <button *ngIf="editMode" (click)="cancelEdit()" class="btn-secondary">
+      Cancelar
+    </button>
+
+    <button (click)="close()" class="btn-dark">
+      Cerrar
+    </button>
+
+  </div>
+
 </div>
 
 <ng-template #noSelection>
   <div class="empty-state">
-    <p>Selecciona un jugador para ver su detalle.</p>
+    <p>Selecciona un jugador</p>
   </div>
 </ng-template>

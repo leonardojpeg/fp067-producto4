@@ -1,5 +1,6 @@
 <h2 class="section-title">Jugadores</h2>
 
+<!-- FILTROS -->
 <div class="filters-box">
   <div class="filter-group">
     <label for="search">Buscar jugador</label>
@@ -21,6 +22,61 @@
   </div>
 </div>
 
+<!-- MENSAJES -->
+<div *ngIf="successMessage" class="alert success">
+  {{ successMessage }}
+</div>
+
+<div *ngIf="errorMessage" class="alert error">
+  {{ errorMessage }}
+</div>
+
+<!-- FORM NUEVO JUGADOR -->
+<div class="add-player-box">
+  <h3>Añadir jugador</h3>
+
+  <div class="form-grid">
+
+    <div class="form-field">
+      <input [(ngModel)]="newPlayer.nombre" placeholder="Nombre" />
+    </div>
+
+    <div class="form-field">
+      <input [(ngModel)]="newPlayer.apellidos" placeholder="Apellidos" />
+    </div>
+
+    <div class="form-field">
+      <input [(ngModel)]="newPlayer.posicion" placeholder="Posición" />
+    </div>
+
+    <div class="form-field">
+      <input [(ngModel)]="newPlayer.equipo" placeholder="Equipo" />
+    </div>
+
+    <div class="form-field">
+      <input [(ngModel)]="newPlayer.altura" placeholder="Altura (2.06 m)" />
+    </div>
+
+    <div class="form-field">
+      <input [(ngModel)]="newPlayer.perfil" placeholder="Perfil" />
+    </div>
+
+    <div class="form-field">
+      <input type="number" [(ngModel)]="newPlayer.edad" placeholder="Edad" />
+    </div>
+
+    <div class="form-field">
+      <input type="number" [(ngModel)]="newPlayer.dorsal" placeholder="Dorsal" />
+    </div>
+
+  </div>
+
+  <button (click)="addPlayer()" class="btn btn-success btn-full">
+    Añadir jugador
+  </button>
+</div>
+
+<!-- LISTA -->
 <div class="players-list">
   <article
     class="player-card"
@@ -37,5 +93,12 @@
     <p><strong>Edad:</strong> {{ player.edad }}</p>
     <p><strong>Altura:</strong> {{ player.altura }}</p>
     <p><strong>Dorsal:</strong> {{ player.dorsal }}</p>
+
+    <button
+      (click)="deletePlayer(player.id!); $event.stopPropagation()"
+      class="btn btn-danger btn-sm"
+    >
+      Eliminar
+    </button>
   </article>
 </div>

@@ -2,7 +2,6 @@ import { Player } from '../models/player';
 
 export const PLAYERS: Player[] = [
   {
-    id: 1,
     nombre: 'LeBron',
     apellidos: 'James',
     posicion: 'Alero',
@@ -16,7 +15,6 @@ export const PLAYERS: Player[] = [
     imagen: 'assets/images/lebronjames.jpg'
   },
   {
-    id: 2,
     nombre: 'Anthony',
     apellidos: 'Davis',
     posicion: 'Pívot',
@@ -30,7 +28,6 @@ export const PLAYERS: Player[] = [
     imagen: 'assets/images/anthonydavis.jpg'
   },
   {
-    id: 3,
     nombre: "D'Angelo",
     apellidos: 'Russell',
     posicion: 'Base',
@@ -44,7 +41,6 @@ export const PLAYERS: Player[] = [
     imagen: 'assets/images/dangelorussell.jpg'
   },
   {
-    id: 4,
     nombre: 'Austin',
     apellidos: 'Reaves',
     posicion: 'Escolta',
@@ -58,7 +54,6 @@ export const PLAYERS: Player[] = [
     imagen: 'assets/images/austinreaves.jpg'
   },
   {
-    id: 5,
     nombre: 'Rui',
     apellidos: 'Hachimura',
     posicion: 'Alero',
