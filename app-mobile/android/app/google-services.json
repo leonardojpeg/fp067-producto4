@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "583706100820",
+    "firebase_url": "https://producto-2-fp067-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "producto-2-fp067",
+    "storage_bucket": "producto-2-fp067.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:583706100820:android:c72facb2f1d865f1f559c1",
+        "android_client_info": {
+          "package_name": "com.fp067.basket"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnA6uIJeY1-_6Pc4x1dwjNgJ_Lg3gfvjg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
