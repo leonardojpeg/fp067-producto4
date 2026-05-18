@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { getMessaging, getToken, onMessage, Messaging } from 'firebase/messaging';
 import { getApp } from 'firebase/app';
+import { Firestore, doc, setDoc } from '@angular/fire/firestore';
 
 @Injectable({ providedIn: 'root' })
 export class NotificationService {
   private messaging: Messaging | null = null;
 
-  constructor() {
+  constructor(private firestore: Firestore) {
     try {
       const app = getApp();
       this.messaging = getMessaging(app);
@@ -35,10 +36,22 @@ export class NotificationService {
 
       // Obtener token FCM (necesita VAPID key de Firebase Console)
       const token = await getToken(this.messaging, {
-        vapidKey: 'TU_VAPID_KEY_DE_FIREBASE_CONSOLE'
+        vapidKey: 'BN7UkyRSYM_nEGzOU9K9Fyf3lU3SITo-cEeulfSPAXUYx6yoBDYrUAR7a183bNMDfPoy3cEUBg63OO9njN48H5k'
       });
 
       console.log('FCM Token (web):', token);
+
+      // Guardar el token en Firestore en la colección fcm_tokens
+      if (token) {
+        const tokenDocRef = doc(this.firestore, `fcm_tokens/${token}`);
+        await setDoc(tokenDocRef, {
+          token: token,
+          platform: 'web',
+          createdAt: new Date().toISOString()
+        });
+        console.log('Token guardado en Firestore');
+      }
+
       return token;
     } catch (error) {
       console.error('Error al obtener token FCM:', error);
