@@ -1,81 +1,112 @@
-# Producto 3 - FP067 - Interfaz Móvil con React Native
+# Producto 4 - FP067 - Recibiendo Notificaciones Push
+
+## Arquitectura
+
+```
+Firebase Console (fp067-producto3-basket)
+├── App Android (React Native)
+├── App Web (Angular)
+├── Cloud Functions
+│   ├── onNewPlayer (onCreate) → envía FCM push
+│   └── onUpdatePlayer (onUpdate) → envía FCM push
+├── Cloud Messaging (FCM)
+│   ├── → React Native (@react-native-firebase/messaging)
+│   └── → Angular (firebase/messaging + Service Worker)
+└── Realtime Database (datos de jugadores)
+```
 
 ## Estructura del Proyecto
 
 ```
-producto3-fp067/
-├── app-mobile/                 # App React Native (Producto 3)
-│   ├── App.js                  # Stack Navigator con 3 pantallas
-│   ├── firebaseConfig.js       # Configuración Firebase Realtime DB
+producto4-fp067/
+├── functions/                      # Cloud Functions (Criterio 1)
+│   ├── index.js                    # onCreate + onUpdate triggers
+│   └── package.json
+├── app-mobile/                     # App React Native (Criterio 2)
+│   ├── App.js                      # Notificaciones FCM integradas
 │   ├── screens/
-│   │   ├── ListScreen.js       # FlatList con TODOS los datos de Firebase
-│   │   ├── DetailScreen.js     # Detalle + zoom de imagen (Modal)
-│   │   └── MediaScreen.js      # Reproductor con 6 botones de interacción
-│   ├── package.json
-│   ├── app.json
-│   └── .gitignore
-├── src/                        # App Angular (Producto 2 - base web)
+│   │   ├── ListScreen.js
+│   │   ├── DetailScreen.js
+│   │   └── MediaScreen.js
+│   ├── android/app/src/main/
+│   │   └── AndroidManifest.xml     # Permisos POST_NOTIFICATIONS
+│   ├── firebaseConfig.js
+│   └── package.json                # @react-native-firebase deps
+├── src/                            # App Angular (Criterio 3)
 │   ├── app/
-│   │   ├── components/
-│   │   │   ├── players/        # Listado + CRUD
-│   │   │   ├── detail/         # Detalle con edición
-│   │   │   └── media/          # Reproductor multimedia
 │   │   ├── services/
-│   │   ├── models/
-│   │   └── pipes/
+│   │   │   ├── player.service.ts
+│   │   │   └── notification.service.ts  # Servicio FCM web
+│   │   ├── app.ts                  # Integra NotificationService
+│   │   └── app.config.ts           # provideMessaging()
+│   ├── firebase-messaging-sw.js    # Service Worker background
 │   └── environments/
-├── package.json                # Angular dependencies
-├── angular.json
-└── README.md
+├── firebase.json
+├── .firebaserc
+└── package.json
 ```
 
-## App Móvil (React Native + Expo)
+## Criterio 1: Cloud Functions (5 pts)
 
-### Tecnologías
-- React Native 0.81 + Expo SDK 54
-- React Navigation (Stack Navigator)
-- Firebase Realtime Database
-- expo-av (reproductor multimedia)
+### Triggers implementados:
+- **`onNewPlayer`** (onCreate): Se dispara cuando se añade un nuevo jugador a la BD. Envía push al topic 'all'.
+- **`onUpdatePlayer`** (onUpdate): Se dispara cuando se modifica un jugador. Envía push al topic 'all'.
 
-### Pantallas
-1. **ListScreen** - FlatList con todos los jugadores de Firebase, búsqueda y filtro por posición
-2. **DetailScreen** - Todos los datos del jugador + imagen con zoom (Modal)
-3. **MediaScreen** - Reproductor de vídeo con 6 controles: Play/Pause, Stop, Mute, Velocidad, Retroceder, Adelantar
+### Desplegar:
+```bash
+cd functions
+npm install
+cd ..
+firebase deploy --only functions
+```
 
-### Navegación
-- Stack Navigator con 3 pantallas
-- Icono de vuelta atrás (automático con Stack)
-- Botón "Inicio" en el header de Detail y Media
+## Criterio 2: Notificación en App Móvil - React Native (5 pts)
 
-### Ejecutar
+### Implementado en `app-mobile/App.js`:
+1. Solicitud de permisos (Android 13+ POST_NOTIFICATIONS)
+2. Obtención de token FCM
+3. Suscripción al topic 'all'
+4. Listener foreground (Alert.alert)
+5. Handler background (setBackgroundMessageHandler)
+6. Handler apertura desde notificación
+
+### Configuración:
+- `google-services.json` → colocar en `android/app/`
+- Permisos en `AndroidManifest.xml`
+- Dependencias: `@react-native-firebase/app` + `@react-native-firebase/messaging`
+
+## Criterio 3: Notificación en App Web - Angular (5 pts)
+
+### Implementado:
+1. **`notification.service.ts`** — Solicita permisos, obtiene token, escucha mensajes foreground
+2. **`firebase-messaging-sw.js`** — Service Worker para notificaciones background
+3. **`app.ts`** — Integra el servicio en ngOnInit
+4. **`app.config.ts`** — provideMessaging() registrado
+5. **`angular.json`** — Service Worker incluido en assets del build
+
+## Ejecutar
+
+### Angular (web):
+```bash
+npm install
+npm start
+```
+
+### React Native (móvil):
 ```bash
 cd app-mobile
 npm install
 npx expo start
 ```
 
-## App Web (Angular)
-
-### Tecnologías
-- Angular 17 (standalone components)
-- @angular/fire (Firestore + Storage)
-- Firebase Firestore (base de datos)
-- Firebase Storage (imágenes y vídeos)
-
-### Ejecutar
+### Cloud Functions:
 ```bash
-npm install
-npm start
+firebase deploy --only functions
 ```
 
-## Firebase
-- Realtime Database: datos de jugadores para la app móvil
-- Firestore: datos de jugadores para la app web (Producto 2)
-- Storage: imágenes y vídeos subidos desde la app web
-
 ## Bibliografía
-- React Native Docs: https://reactnative.dev/docs
-- React Navigation: https://reactnavigation.org/docs
-- Firebase JS SDK: https://firebase.google.com/docs/web/setup
-- Expo AV: https://docs.expo.dev/versions/latest/sdk/av/
-- Firebase Realtime Database: https://firebase.google.com/docs/database
+- https://rnfirebase.io/messaging/usage
+- https://firebase.google.com/docs/functions/get-started
+- https://firebase.google.com/docs/functions/database-events
+- https://firebase.google.com/docs/cloud-messaging/js/client
+- https://firebase.google.com/docs/cloud-messaging/concept-options#topic-messaging
