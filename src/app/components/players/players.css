@@ -1,0 +1,198 @@
+.section-title {
+  margin-bottom: 0.8rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+/* ---------------- LISTA ---------------- */
+
+.players-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.player-card {
+  background: #ffffff;
+  border: 1px solid #d9dee7;
+  border-radius: 14px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.player-card:hover {
+  transform: translateY(-2px);
+  border-color: #FDB927;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+}
+
+.player-card.selected {
+  border: 2px solid #FDB927;
+  background: #fff7e0;
+}
+
+.player-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.player-main h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.badge-position {
+  background: #2563eb;
+  color: white;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.player-card p {
+  margin: 0.2rem 0;
+  font-size: 0.9rem;
+}
+
+/* ---------------- FILTROS ---------------- */
+
+.filters-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem;
+  margin-bottom: 1rem;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.filter-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.filter-group input,
+.filter-group select {
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 0.6rem;
+  font-size: 0.9rem;
+}
+
+/* ---------------- FORM NUEVO JUGADOR ---------------- */
+
+.add-player-box {
+  background: #ffffff;
+  border: 1px solid #d9dee7;
+  border-radius: 14px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.add-player-box h3 {
+  margin-bottom: 0.6rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+/* GRID limpio sin overlap */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+  margin-bottom: 0.6rem;
+}
+
+/* INPUTS PERFECTAMENTE ALINEADOS */
+.form-grid input {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 0.6rem;
+  font-size: 0.9rem;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+/* FIX CLAVE: evita solapamiento */
+.form-grid input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+/* ---------------- BOTONES UNIFICADOS ---------------- */
+
+.btn {
+  border: none;
+  border-radius: 10px;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+/* PRIMARY */
+.btn-primary {
+  background: #2563eb;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #1e4ed8;
+}
+
+/* SUCCESS (añadir jugador) */
+.btn-success {
+  background: #16a34a;
+  color: white;
+}
+
+.btn-success:hover {
+  background: #15803d;
+}
+
+/* DANGER */
+.btn-danger {
+  background: #dc2626;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #b91c1c;
+}
+
+/* DARK (cerrar detalle) */
+.btn-dark {
+  background: #0f172a;
+  color: white;
+}
+
+.btn-dark:hover {
+  background: #020617;
+}
+
+/* BOTÓN ADD ocupa toda la fila */
+.add-player-box button {
+  width: 100%;
+}
+
+/* ---------------- RESPONSIVE ---------------- */
+
+@media (max-width: 700px) {
+  .filters-box {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}

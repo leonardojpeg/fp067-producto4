@@ -1,0 +1,130 @@
+<h2 class="section-title">Jugadores</h2>
+
+<!-- FILTROS -->
+<div class="filters-box">
+  <div class="filter-group">
+    <label for="search">Buscar jugador</label>
+    <input
+      id="search"
+      type="text"
+      [(ngModel)]="searchText"
+      placeholder="Nombre o apellido"
+    />
+  </div>
+
+  <div class="filter-group">
+    <label for="position">Posición</label>
+    <select id="position" [(ngModel)]="selectedPosition">
+      <option *ngFor="let position of positions" [value]="position">
+        {{ position }}
+      </option>
+    </select>
+  </div>
+</div>
+
+<!-- MENSAJES -->
+<div *ngIf="successMessage" class="alert success">
+  {{ successMessage }}
+</div>
+
+<div *ngIf="errorMessage" class="alert error">
+  {{ errorMessage }}
+</div>
+
+<!-- FORM NUEVO JUGADOR -->
+<div class="add-player-box">
+  <h3>Añadir jugador</h3>
+
+  <div class="form-grid">
+
+    <div class="form-field">
+      <input [(ngModel)]="newPlayer.nombre" placeholder="Nombre" />
+    </div>
+
+    <div class="form-field">
+      <input [(ngModel)]="newPlayer.apellidos" placeholder="Apellidos" />
+    </div>
+
+    <div class="form-field">
+      <input [(ngModel)]="newPlayer.posicion" placeholder="Posición" />
+    </div>
+
+    <div class="form-field">
+      <input [(ngModel)]="newPlayer.equipo" placeholder="Equipo" />
+    </div>
+
+    <div class="form-field">
+      <input [(ngModel)]="newPlayer.altura" placeholder="Altura (2.06 m)" />
+    </div>
+
+    <div class="form-field">
+      <input [(ngModel)]="newPlayer.perfil" placeholder="Perfil" />
+    </div>
+
+    <div class="form-field">
+      <input type="number" [(ngModel)]="newPlayer.edad" placeholder="Edad" />
+    </div>
+
+    <div class="form-field">
+      <input type="number" [(ngModel)]="newPlayer.dorsal" placeholder="Dorsal" />
+    </div>
+
+  </div>
+
+  <!-- SUBIDA ARCHIVOS -->
+  <div style="margin-top:10px; display:flex; flex-direction:column; gap:6px;">
+
+    <label>Imagen</label>
+    <input type="file" (change)="uploadImage($event)">
+
+    <!-- FEEDBACK IMAGEN -->
+    <div *ngIf="isUploadingImage">
+      <small style="color:#2563eb;">Subiendo imagen...</small>
+    </div>
+
+    <label style="margin-top:10px;">Video</label>
+    <input type="file" (change)="uploadVideo($event)">
+    <br>
+    <!-- FEEDBACK VIDEO -->
+    <div *ngIf="isUploadingVideo">
+      <small style="color:#2563eb;">Subiendo vídeo...</small>
+    </div>
+
+  </div>
+
+  <!-- BOTÓN -->
+  <button 
+    (click)="addPlayer()" 
+    class="btn btn-success btn-full"
+    [disabled]="isUploadingImage || isUploadingVideo"
+  >
+    Añadir jugador
+  </button>
+</div>
+
+<!-- LISTA -->
+<div class="players-list">
+  <article
+    class="player-card"
+    *ngFor="let player of players | playerFilter:searchText:selectedPosition"
+    [class.selected]="player.id === selectedPlayerId"
+    (click)="selectPlayer(player)"
+  >
+    <div class="player-main">
+      <h3>{{ player.nombre }} {{ player.apellidos }}</h3>
+      <span class="badge-position">{{ player.posicion }}</span>
+    </div>
+
+    <p><strong>Equipo:</strong> {{ player.equipo }}</p>
+    <p><strong>Edad:</strong> {{ player.edad }}</p>
+    <p><strong>Altura:</strong> {{ player.altura }}</p>
+    <p><strong>Dorsal:</strong> {{ player.dorsal }}</p>
+
+    <button
+      (click)="deletePlayer(player.id!); $event.stopPropagation()"
+      class="btn btn-danger btn-sm"
+    >
+      Eliminar
+    </button>
+  </article>
+</div>

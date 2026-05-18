@@ -1,0 +1,61 @@
+<h2 class="section-title">Reproductor</h2>
+
+<div *ngIf="player as p; else noVideo" class="media-card">
+
+  <div class="media-header">
+    <span class="media-team">{{ p.equipo }}</span>
+    <h3>Vídeo de {{ p.nombre }} {{ p.apellidos }}</h3>
+  </div>
+
+<div class="video-wrapper" *ngIf="p.video">
+  <video
+    #videoPlayer
+    class="video-player"
+    controls
+    (timeupdate)="updateProgress(videoPlayer)"
+    (loadedmetadata)="onLoadedMetadata(videoPlayer)"
+  >
+    <source [src]="p.video" type="video/mp4" />
+    Tu navegador no soporta vídeo HTML5.
+  </video>
+</div>
+
+  <div class="controls">
+    <button class="control-btn" (click)="play()">Reproducir</button>
+    <button class="control-btn" (click)="pause()">Pausar</button>
+    <button class="control-btn stop" (click)="stop()">Detener</button>
+  </div>
+
+  <div class="volume-control">
+    <label>Progreso</label>
+    <input
+      type="range"
+      min="0"
+      [max]="duration"
+      step="0.1"
+      [value]="currentTime"
+      [style.--progress-percent]="getProgressPercent()"
+      (input)="seek($event)"
+    />
+  </div>
+
+  <div class="volume-control">
+    <label>Volumen</label>
+    <input
+      type="range"
+      min="0"
+      max="1"
+      step="0.1"
+      [value]="volume"
+      [style.--progress-percent]="getVolumePercent()"
+      (input)="setVolume($event)"
+    />
+  </div>
+
+</div>
+
+<ng-template #noVideo>
+  <div class="empty-state">
+    <p>Selecciona un jugador para cargar su vídeo.</p>
+  </div>
+</ng-template>
