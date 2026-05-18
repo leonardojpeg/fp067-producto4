@@ -69,3 +69,21 @@ exports.onUpdatePlayer = functions.database
       return null;
     }
   });
+
+/**
+ * Trigger: cuando se GUARDA un nuevo token en Firestore (desde la web)
+ * Lo suscribe automáticamente al topic 'all' para que reciba notificaciones
+ */
+exports.onNewToken = functions.firestore
+  .document('fcm_tokens/{tokenId}')
+  .onCreate(async (snap, context) => {
+    const token = context.params.tokenId;
+    try {
+      const response = await admin.messaging().subscribeToTopic(token, 'all');
+      console.log('Token suscrito exitosamente al topic "all":', response);
+      return response;
+    } catch (error) {
+      console.error('Error suscribiendo el token al topic:', error);
+      return null;
+    }
+  });
