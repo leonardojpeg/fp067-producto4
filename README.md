@@ -1,113 +1,79 @@
-# Producto 4 - FP067 - Recibiendo Notificaciones Push
+# Producto 4 - FP067 - Notificaciones Push
 
-## Arquitectura
+**Integrantes:** Leonardo Cuevas, Gerard Garro, Christian García
 
-```
-Firebase Console (fp067-producto3-basket)
-├── App Android (React Native)
-├── App Web (Angular)
-├── Cloud Functions
-│   ├── onNewPlayer (onCreate) → envía FCM push
-│   └── onUpdatePlayer (onUpdate) → envía FCM push
-├── Cloud Messaging (FCM)
-│   ├── → React Native (@react-native-firebase/messaging)
-│   └── → Angular (firebase/messaging + Service Worker)
-└── Realtime Database (datos de jugadores)
-```
+🔗 **App Web desplegada:** https://fp067-producto4.onrender.com/  
+📦 **Repositorio:** https://github.com/leonardojpeg/fp067-producto4
 
-## Estructura del Proyecto
+## Ejecutar
 
-```
-producto4-fp067/
-├── functions/                      # Cloud Functions (Criterio 1)
-│   ├── index.js                    # onCreate + onUpdate triggers
-│   └── package.json
-├── app-mobile/                     # App React Native (Criterio 2)
-│   ├── App.js                      # Notificaciones FCM integradas
-│   ├── screens/
-│   │   ├── ListScreen.js
-│   │   ├── DetailScreen.js
-│   │   └── MediaScreen.js
-│   ├── android/app/src/main/
-│   │   └── AndroidManifest.xml     # Permisos POST_NOTIFICATIONS
-│   ├── firebaseConfig.js
-│   └── package.json                # @react-native-firebase deps
-├── src/                            # App Angular (Criterio 3)
-│   ├── app/
-│   │   ├── services/
-│   │   │   ├── player.service.ts
-│   │   │   └── notification.service.ts  # Servicio FCM web
-│   │   ├── app.ts                  # Integra NotificationService
-│   │   └── app.config.ts           # provideMessaging()
-│   ├── firebase-messaging-sw.js    # Service Worker background
-│   └── environments/
-├── firebase.json
-├── .firebaserc
-└── package.json
-```
-
-## Criterio 1: Cloud Functions (5 pts)
-
-### Triggers implementados:
-- **`onNewPlayer`** (onCreate): Se dispara cuando se añade un nuevo jugador a la BD. Envía push al topic 'all'.
-- **`onUpdatePlayer`** (onUpdate): Se dispara cuando se modifica un jugador. Envía push al topic 'all'.
-
-### Desplegar:
 ```bash
+# Angular (web)
+npm install
+npm start
+# → http://localhost:4200
+
+# React Native (móvil)
+cd app-mobile
+npm install
+npx expo start
+
+# Cloud Functions (deploy)
 cd functions
 npm install
 cd ..
 firebase deploy --only functions
 ```
 
-## Criterio 2: Notificación en App Móvil - React Native (5 pts)
+## Arquitectura
 
-### Implementado en `app-mobile/App.js`:
-1. Solicitud de permisos (Android 13+ POST_NOTIFICATIONS)
-2. Obtención de token FCM
-3. Suscripción al topic 'all'
-4. Listener foreground (Alert.alert)
-5. Handler background (setBackgroundMessageHandler)
-6. Handler apertura desde notificación
-
-### Configuración:
-- `google-services.json` → colocar en `android/app/`
-- Permisos en `AndroidManifest.xml`
-- Dependencias: `@react-native-firebase/app` + `@react-native-firebase/messaging`
-
-## Criterio 3: Notificación en App Web - Angular (5 pts)
-
-### Implementado:
-1. **`notification.service.ts`** — Solicita permisos, obtiene token, escucha mensajes foreground
-2. **`firebase-messaging-sw.js`** — Service Worker para notificaciones background
-3. **`app.ts`** — Integra el servicio en ngOnInit
-4. **`app.config.ts`** — provideMessaging() registrado
-5. **`angular.json`** — Service Worker incluido en assets del build
-
-## Ejecutar
-
-### App Web Angular (desplegada en Render):
-🔗 **https://fp067-producto4.onrender.com/**
-
-### Angular (local):
-```bash
-npm install
-npm start
+```
+Angular app (Render) → escribe en Realtime Database
+                              ↓
+              Cloud Function (onCreate / onUpdate)
+                              ↓
+              FCM → topic 'all'
+                    ↓              ↓
+          React Native        Angular (SW)
 ```
 
-### React Native (móvil):
-```bash
-cd app-mobile
-npm install
-npx expo start
+## Estructura
+
+```
+├── functions/                      # Cloud Functions
+│   ├── index.js                    # onCreate + onUpdate → push
+│   └── package.json
+├── app-mobile/                     # React Native
+│   ├── App.js                      # FCM: permisos + token + listeners
+│   ├── android/app/
+│   │   ├── google-services.json
+│   │   └── src/main/AndroidManifest.xml
+│   ├── screens/
+│   └── firebaseConfig.js
+├── src/                            # Angular
+│   ├── app/
+│   │   ├── services/
+│   │   │   ├── player.service.ts        # CRUD Realtime Database
+│   │   │   └── notification.service.ts  # FCM web + VAPID
+│   │   ├── app.ts                       # ngOnInit → notifications
+│   │   └── app.config.ts               # provideDatabase + provideMessaging
+│   ├── firebase-messaging-sw.js         # Background notifications
+│   └── environments/environment.ts
+├── firebase.json
+├── .firebaserc
+└── realtime-db-import.json              # 12 jugadores para importar
 ```
 
-### Cloud Functions:
-```bash
-firebase deploy --only functions
-```
+## Criterios de la Rúbrica
+
+| Criterio | Puntos | Implementación |
+|----------|--------|----------------|
+| Cloud Functions (onCreate + onUpdate) | 5 | `functions/index.js` — triggers en `/players/{playerId}` → `sendToTopic('all')` |
+| Notificación app móvil | 5 | `App.js` — permisos, token, topic, foreground/background listeners |
+| Notificación app web | 5 | `notification.service.ts` + `firebase-messaging-sw.js` + VAPID key |
 
 ## Bibliografía
+
 - https://rnfirebase.io/messaging/usage
 - https://firebase.google.com/docs/functions/get-started
 - https://firebase.google.com/docs/functions/database-events
