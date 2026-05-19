@@ -3,12 +3,10 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
-import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { provideDatabase, getDatabase } from '@angular/fire/database';
 import { provideMessaging, getMessaging } from '@angular/fire/messaging';
 
 import { environment } from '../environments/environment';
-
-import { getApp } from 'firebase/app';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,7 +14,7 @@ export const appConfig: ApplicationConfig = {
 
     provideFirebaseApp(() => initializeApp(environment.firebase)),
 
-    provideFirestore(() => getFirestore(getApp(), 'basket')),
+    provideDatabase(() => getDatabase()),
 
     provideMessaging(() => getMessaging())
   ]

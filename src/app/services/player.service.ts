@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import {
-  Firestore,
-  collection,
-  collectionData,
-  addDoc,
-  deleteDoc,
-  doc,
-  updateDoc
-} from '@angular/fire/firestore';
+  Database,
+  ref,
+  onValue,
+  push,
+  remove,
+  update,
+  set
+} from '@angular/fire/database';
 
 import { Observable } from 'rxjs';
 import { Player } from '../models/player';
@@ -17,29 +17,42 @@ import { Player } from '../models/player';
 })
 export class PlayerService {
 
-  constructor(private firestore: Firestore) {}
+  constructor(private db: Database) {}
 
   getPlayers(): Observable<Player[]> {
-    const playersRef = collection(this.firestore, 'players');
-    return collectionData(playersRef, { idField: 'id' }) as Observable<Player[]>;
+    return new Observable<Player[]>(subscriber => {
+      const playersRef = ref(this.db, 'players');
+      onValue(playersRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          const players: Player[] = Object.keys(data).map(key => ({
+            id: key,
+            ...data[key]
+          }));
+          subscriber.next(players);
+        } else {
+          subscriber.next([]);
+        }
+      }, (error) => {
+        subscriber.error(error);
+      });
+    });
   }
 
   addPlayer(player: Player) {
-    const playersRef = collection(this.firestore, 'players');
-    return addDoc(playersRef, player);
+    const playersRef = ref(this.db, 'players');
+    const { id, ...playerData } = player;
+    return push(playersRef, playerData);
   }
 
   deletePlayer(id: string) {
-    const playerDoc = doc(this.firestore, `players/${id}`);
-    return deleteDoc(playerDoc);
+    const playerRef = ref(this.db, `players/${id}`);
+    return remove(playerRef);
   }
 
   updatePlayer(id: string, player: Player) {
-    const playerDoc = doc(this.firestore, `players/${id}`);
-
-    // eliminar id antes de enviar a Firestore
+    const playerRef = ref(this.db, `players/${id}`);
     const { id: _, ...playerData } = player;
-
-    return updateDoc(playerDoc, playerData);
+    return update(playerRef, playerData);
   }
 }
