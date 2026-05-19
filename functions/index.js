@@ -3,12 +3,12 @@ const admin = require('firebase-admin');
 admin.initializeApp();
 
 /**
- * Trigger: cuando se CREA un nuevo jugador en la BD
+ * Trigger: cuando se CREA un nuevo jugador en la Realtime Database
  * Envía notificación push a todos los dispositivos suscritos al topic 'all'
  * (Angular web + React Native móvil)
  */
 exports.onNewPlayer = functions.database
-  .ref('/{playerId}')
+  .ref('/players/{playerId}')
   .onCreate(async (snapshot, context) => {
     const newPlayer = snapshot.val();
 
@@ -36,11 +36,11 @@ exports.onNewPlayer = functions.database
   });
 
 /**
- * Trigger: cuando se ACTUALIZA un jugador en la BD
+ * Trigger: cuando se ACTUALIZA un jugador en la Realtime Database
  * Envía notificación push informando del cambio
  */
 exports.onUpdatePlayer = functions.database
-  .ref('/{playerId}')
+  .ref('/players/{playerId}')
   .onUpdate(async (change, context) => {
     const before = change.before.val();
     const after = change.after.val();
