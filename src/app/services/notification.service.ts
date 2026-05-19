@@ -17,8 +17,12 @@ export class NotificationService {
         return null;
       }
 
+      // Esperar a que el Service Worker esté activo
+      const registration = await navigator.serviceWorker.ready;
+
       const token = await getToken(this.messaging, {
-        vapidKey: 'BLGLmjW9OBod_uecLCLjehq1_7yamfe5pZUvpJeyjFXPK5rNsazdtsRwWpZpCwWSJtYg7GLloOPM-vtmiwcEVpE'
+        vapidKey: 'BLGLmjW9OBod_uecLCLjehq1_7yamfe5pZUvpJeyjFXPK5rNsazdtsRwWpZpCwWSJtYg7GLloOPM-vtmiwcEVpE',
+        serviceWorkerRegistration: registration
       });
 
       console.log('FCM Token (web):', token);
