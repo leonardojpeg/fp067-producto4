@@ -7,7 +7,6 @@ admin.initializeApp();
  * Llamada desde la app web Angular al obtener el token
  */
 exports.subscribeToTopic = functions.https.onRequest(async (req, res) => {
-  // CORS
   res.set('Access-Control-Allow-Origin', '*');
   res.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.set('Access-Control-Allow-Headers', 'Content-Type');
@@ -35,15 +34,16 @@ exports.subscribeToTopic = functions.https.onRequest(async (req, res) => {
 
 /**
  * Trigger: cuando se CREA un nuevo jugador en la Realtime Database
- * Envía notificación push a todos los dispositivos suscritos al topic 'all'
- * (Angular web + React Native móvil)
+ * Envía notificación push usando FCM v1 API (send) al topic 'all'
  */
 exports.onNewPlayer = functions.database
+  .instance('fp067-producto2-basket-default-rtdb')
   .ref('/players/{playerId}')
   .onCreate(async (snapshot, context) => {
     const newPlayer = snapshot.val();
 
-    const payload = {
+    const message = {
+      topic: 'all',
       notification: {
         title: '🆕 Nuevo jugador añadido',
         body: `${newPlayer.nombre} ${newPlayer.apellidos} - ${newPlayer.equipo} (${newPlayer.posicion})`,
@@ -57,7 +57,7 @@ exports.onNewPlayer = functions.database
     };
 
     try {
-      const response = await admin.messaging().sendToTopic('all', payload);
+      const response = await admin.messaging().send(message);
       console.log('Notificación onCreate enviada correctamente:', response);
       return response;
     } catch (error) {
@@ -68,15 +68,17 @@ exports.onNewPlayer = functions.database
 
 /**
  * Trigger: cuando se ACTUALIZA un jugador en la Realtime Database
- * Envía notificación push informando del cambio
+ * Envía notificación push usando FCM v1 API (send) al topic 'all'
  */
 exports.onUpdatePlayer = functions.database
+  .instance('fp067-producto2-basket-default-rtdb')
   .ref('/players/{playerId}')
   .onUpdate(async (change, context) => {
     const before = change.before.val();
     const after = change.after.val();
 
-    const payload = {
+    const message = {
+      topic: 'all',
       notification: {
         title: '🔄 Jugador actualizado',
         body: `${after.nombre} ${after.apellidos} ha sido modificado`,
@@ -92,7 +94,7 @@ exports.onUpdatePlayer = functions.database
     };
 
     try {
-      const response = await admin.messaging().sendToTopic('all', payload);
+      const response = await admin.messaging().send(message);
       console.log('Notificación onUpdate enviada correctamente:', response);
       return response;
     } catch (error) {
