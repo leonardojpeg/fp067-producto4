@@ -35,7 +35,7 @@ export class NotificationService {
 
       // Obtener token FCM (necesita VAPID key de Firebase Console)
       const token = await getToken(this.messaging, {
-        vapidKey: 'TU_VAPID_KEY_DE_FIREBASE_CONSOLE'
+        vapidKey: 'BLGLmjW9OBod_uecLCLjehq1_7yamfe5pZUvpJeyjFXPK5rNsazdtsRwWpZpCwWSJtYg7GLloOPM-vtmiwcEVpE'
       });
 
       console.log('FCM Token (web):', token);
