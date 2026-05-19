@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import {
-  Firestore,
-  collection,
-  collectionData,
-  addDoc,
-  deleteDoc,
-  doc,
-  updateDoc
-} from '@angular/fire/firestore';
+  Database,
+  ref,
+  listVal,
+  push,
+  remove,
+  update
+} from '@angular/fire/database';
 
 import { Observable } from 'rxjs';
 import { Player } from '../models/player';
@@ -17,29 +16,28 @@ import { Player } from '../models/player';
 })
 export class PlayerService {
 
-  constructor(private firestore: Firestore) {}
+  constructor(private db: Database) {}
 
   getPlayers(): Observable<Player[]> {
-    const playersRef = collection(this.firestore, 'players');
-    return collectionData(playersRef, { idField: 'id' }) as Observable<Player[]>;
+    const playersRef = ref(this.db, '/');
+    
+    return listVal(playersRef, { keyField: 'id' }) as Observable<Player[]>;
   }
 
   addPlayer(player: Player) {
-    const playersRef = collection(this.firestore, 'players');
-    return addDoc(playersRef, player);
+    const playersRef = ref(this.db, '/');
+    return push(playersRef, player);
   }
 
   deletePlayer(id: string) {
-    const playerDoc = doc(this.firestore, `players/${id}`);
-    return deleteDoc(playerDoc);
+    const playerRef = ref(this.db, `/${id}`);
+    return remove(playerRef);
   }
 
   updatePlayer(id: string, player: Player) {
-    const playerDoc = doc(this.firestore, `players/${id}`);
-
-    // eliminar id antes de enviar a Firestore
+    const playerRef = ref(this.db, `/${id}`);
+    
     const { id: _, ...playerData } = player;
-
-    return updateDoc(playerDoc, playerData);
+    return update(playerRef, playerData);
   }
 }
